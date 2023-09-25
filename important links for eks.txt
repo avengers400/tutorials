@@ -1,0 +1,41 @@
+connect to eks---https://aws.amazon.com/premiumsupport/knowledge-center/eks-cluster-connection/
+
+install kubectl- https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+
+install eksctl- https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
+
+uninstalling awscli- rmdir %UserProfile%\.aws
+yum remove awscli
+
+installing awscli2:-https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+export PATH=/usr/local/bin:$PATH
+
+
+eksctl create cluster --name clusterautoscaler1 --region us-east-1 --version 1.27 --nodegroup-name ng-default-4 --node-type t3.medium --nodes 2 --managed
+aws eks --region ap-south-1 update-kubeconfig --name eksctl-test
+eksctl upgrade nodegroup --name=ng-default --cluster=eksctl-cluster --region=ap-south-1
+
+kubectl get svc --all-namespaces
+Delete any services that have an associated EXTERNAL-IP value. These services are fronted by an Elastic Load Balancing load balancer, and you must delete them in Kubernetes to allow the load balancer and associated resources to be properly released.
+kubectl delete svc service-name
+Delete the cluster and its associated nodes with the following command, replacing prod with your cluster name.
+eksctl delete cluster --name prod
+
+# for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+
+# (Optional) Verify checksum
+curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+
+sudo mv /tmp/eksctl /usr/local/bin
+
+AKIA6QTLU24VJX42DUH6
+w9qc0blYaT/40LBQGGJ4JnExPUds4h7EEq1NvMUK
